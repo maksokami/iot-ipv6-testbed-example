@@ -32,3 +32,6 @@ ip address delete fd:0:0:1::5/96 dev enp0s3
 # You will see address generated in fd:0:0:1 subnet from client's MAC address:
 ip -6 addr show enp0s3
 ```
+
+DNS configuration: Manual
+Default gateway configuration: Manual
