@@ -2,8 +2,8 @@
 This configuration helps to test ipv6 support on IoT device middleware.
 Commands test on Debian9 VMs.
 
-- **client-configuration.md**. Client (=IoT device) should be configured to use IPv6.
-- **router-configuration.md**. Router (=intermediate device) serves as IPv6 gateway that does DNS64 and NAT64 translation.
+- [**client-configuration.md**](client-configuration.md). Client (=IoT device) should be configured to use IPv6.
+- [**router-configuration.md**](router-configuration.md). Router (=intermediate device) serves as IPv6 gateway that does DNS64 and NAT64 translation.
 - Private ipv6 block fd00::/8 is used in the examples (RFC 4193).
 - 64:ff9b:: is reserved for address translation (RFC 8215) and used on the router.
 
@@ -37,9 +37,9 @@ It is also possible to decouple DNS64 and NAT64 functions and run them on differ
 
 # IPv6 address assignment options
 - Static=Manual (this example by default uses static addresses)
-- SLAAC (Stateless autoconfiguration, most commont). See **address-assignment-1-stateless-auto.md**
-- DHCPv6 stateless. See **address-assignment-2-dhcpv6-stateless.md**
-- DHCPv6 stateful. See **address-assignment-3-dhcpv6-stateful.md**
+- SLAAC (Stateless autoconfiguration, most commont). See [**address-assignment-1-stateless-auto.md**](address-assignment-1-stateless-auto.md)
+- DHCPv6 stateless. See [**address-assignment-2-dhcpv6-stateless.md**](address-assignment-2-dhcpv6-stateless.md)
+- DHCPv6 stateful. See [**address-assignment-3-dhcpv6-stateful.md**](address-assignment-3-dhcpv6-stateful.md)
 
 # RFCs:
 - [Unique Local IPv6 Unicast Addresses](https://datatracker.ietf.org/doc/html/rfc4193)
