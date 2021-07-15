@@ -8,9 +8,20 @@ apt install radvd
 Create /etc/radvd.conf. Bind to Client facing interface with IPv6
 ```
 interface enp0s8 {
+  AdvSendAdvert on;
+  MinRtrAdvInterval 3; 
+  MaxRtrAdvInterval 10;
   prefix fd:0:0:1::/64 {
+    AdvOnLink on; 
+    AdvAutonomous on; 
+    AdvRouterAddr on; 
   };
 };
+```
+Restart the service
+```
+systemctl restart radvd
+systemctl status radvd --no-pager
 ```
 
 ## Client
