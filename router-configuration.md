@@ -92,11 +92,17 @@ https://www.jool.mx/en/dns64.html
 
 ```
 sudo apt update
-sudo apt install -y bind9 dnsutils
+sudo apt install -y bind9 bind9utils libcomerr2
+# install if you want to use dig for testing:
+sudo apt install dnsutils
 ```
 
 Modify /etc/bind/named.conf.options
 ```
+acl any6 {
+  # This ACL matches all ipv6 addresses
+  ::0/0;
+};
 acl translator {
 	# Please list all the translator's addresses here.
 	localhost;
@@ -104,42 +110,27 @@ acl translator {
 acl dns64-good-clients {
 	# Please list here the clients that should be allowed to query
 	# the DNS64 service.
-	# "localnets" is a convenient moniker for devices sharing a
-	# network with our DNS64.
 	localnets;
 };
 
 options {
-	# Ubuntu BIND's default options.
-	# Might need to tweak this if you use some other distribution.
 	directory "/var/cache/bind";
 	dnssec-validation auto;
         auth-nxdomain no;    # conform to RFC1035
 	listen-on-v6 { any; };
 
-	# Make sure our nameserver is not abused by external
-	# malicious users.
+	# Make sure our nameserver is not abused by external users
 	allow-query { dns64-good-clients; };
 
 	# This enables DNS64.
-	# "64:ff9b::/96" has to be the same as Jool's `pool6`.
-	dns64 df00:0:0:0001::/96 {
-		# Though serving standard DNS to the translator device
-		# is perfectly normal, we want to exclude it from DNS64.
-		# Why? Well, one reason is that the translator is
-		# already connected to both IP protocols, so its own
-		# traffic doesn't need 64:ff9b for anything.
-		# But a more important reason is that Jool can only
-		# translate on PREROUTING [0]; it specifically excludes
-		# local traffic. If the Jool device itself attempts to
-		# communicate with 64:ff9b, it will fail.
-		# Listing !translator before our good clients here
-		# ensures the translator is excluded from DNS64, even
-		# when it belongs to the client networks.
+	# "64:ff9b::/96" is a Jool's `pool6`.
+	dns64 64:ff9b::/96 {
+	        suffix ::
+		# Allow only local clients to use DNS. Prevent request from translator, which will fail anyway
 		clients { !translator; dns64-good-clients; };
-
-		# Other options per prefix (if you need them) here.
-		# More info here: https://kb.isc.org/article/AA-01031
+		# This line is required to resolve all DNS to NAT64 generated address in 'pool6'. 
+		# You can remove it if you have a true dual-stack (client has both pure ipv4 and ipv6 connectivity). When removed, DNS for sites with ipv6 will not be modified, and they will not be NATed
+		exclude { any6; };
 	};
 };
 ```
