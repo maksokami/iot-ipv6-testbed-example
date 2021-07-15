@@ -35,7 +35,13 @@ It is also possible to decouple DNS64 and NAT64 functions and run them on differ
 
 > Note: You can replace network fd00:: with your private home ipv6 network and connect client and router to the same switch instead of direct connection
 
-### RFCs:
+# IPv6 address assignment options
+- Static=Manual (this example by default uses static addresses)
+- SLAAC (Stateless autoconfiguration, most commont). See **address-assignment-1-stateless-auto.md**
+- DHCPv6 stateless. See **address-assignment-2-dhcpv6-stateless.md**
+- DHCPv6 stateful. See **address-assignment-3-dhcpv6-stateful.md**
+
+# RFCs:
 - [Unique Local IPv6 Unicast Addresses](https://datatracker.ietf.org/doc/html/rfc4193)
 - [IPv6 Addressing of IPv4/IPv6 Translators](https://datatracker.ietf.org/doc/html/rfc6052)
 - [Local-Use IPv4/IPv6 Translation Prefix](https://datatracker.ietf.org/doc/html/rfc8215)
