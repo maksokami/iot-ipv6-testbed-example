@@ -13,7 +13,14 @@ Performance comparison: https://www.sciencedirect.com/science/article/pii/S01403
 
 https://www.hardill.me.uk/wordpress/2020/02/05/ipv6-only-network-with-ipv4-access-dns64-nat64/
 https://apprize.best/linux/ubuntu/17.html
-
+### Enable IPv6 (if disabled)
+```sh
+echo "net.ipv6.conf.all.disable_ipv6 = 0" | tee /etc/sysctl.d/disable-ipv6.conf
+echo "net.ipv6.conf.default.disable_ipv6 = 0" | tee -a /etc/sysctl.d/disable-ipv6.conf
+sysctl -w net.ipv6.conf.all.disable_ipv6=0
+sysctl -w net.ipv6.conf.default.disable_ipv6=0
+sysctl -w net.ipv6.route.flush=1
+```
 
 ### IP forwarding 
 IP forwarding is required to forward IPv6 packets to the NAT64:
