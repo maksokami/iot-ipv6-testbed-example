@@ -7,7 +7,8 @@ Commands test on Debian9 VMs.
 - Private ipv6 block fd00::/8 is used in the examples (RFC 4193).
 - 64:ff9b:: is reserved for address translation (RFC 8215) and used on the router.
 
-Scenario 1: Most common. IPv4 only home network with internet access
+### Scenario 1: Most common. IPv4 only home network with internet access
+Router serves as IPv4 to IPv6 translator and IPv4 gateway for the client.
 
 | Client (IPv6) |  | Router (ipv6 and ipv4) | | WAN |
 | ------------ | -- | -----| ---| --- | 
@@ -16,8 +17,12 @@ Scenario 1: Most common. IPv4 only home network with internet access
 | Static route: 64:ff9b:: to Router  |   |  |  |   | 
 | DNS: Router |   | DNS64 (default: all translated) |  |  - | 
 
-Scenario 2: Dual-stack on the router (Home internet is dual-stack). 
+### Scenario 2: Dual-stack on the router (Home internet is dual-stack). 
 In this case Router should only translate IPv4 DNS and leave IPv6 responces intact. Client will be able to access pure IPv6 resources using home internet.
+Router serves as IPv4 to IPv6 translator, IPv6 gateway, and IPv4 gateway for the client. 
+
+It is also possible to decouple DNS64 and NAT64 functions and run them on different hosts (NAT64 host will be the traffic gateway, while DNS64 host will be set as a DNS server in Client's resolv.conf only).
+
 
 | Client (IPv6) |  | Router (ipv6 and ipv4) | | WAN |
 | ------------ | -- | ----- | ---| --- | 
@@ -30,7 +35,7 @@ In this case Router should only translate IPv4 DNS and leave IPv6 responces inta
 
 > Note: You can replace network fd00:: with your private home ipv6 network and connect client and router to the same switch instead of direct connection
 
-RFCs:
-[Unique Local IPv6 Unicast Addresses](https://datatracker.ietf.org/doc/html/rfc4193)
-[IPv6 Addressing of IPv4/IPv6 Translators](https://datatracker.ietf.org/doc/html/rfc6052)
-[Local-Use IPv4/IPv6 Translation Prefix](https://datatracker.ietf.org/doc/html/rfc8215)
+### RFCs:
+- [Unique Local IPv6 Unicast Addresses](https://datatracker.ietf.org/doc/html/rfc4193)
+- [IPv6 Addressing of IPv4/IPv6 Translators](https://datatracker.ietf.org/doc/html/rfc6052)
+- [Local-Use IPv4/IPv6 Translation Prefix](https://datatracker.ietf.org/doc/html/rfc8215)
