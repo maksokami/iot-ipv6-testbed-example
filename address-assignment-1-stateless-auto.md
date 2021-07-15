@@ -34,4 +34,5 @@ ip -6 addr show enp0s3
 ```
 
 DNS configuration: Manual
+
 Default gateway configuration: Manual
