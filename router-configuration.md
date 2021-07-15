@@ -1,6 +1,7 @@
 
 > Do not use 2001:db8:: addresses for actual deployments. They are reserved for documentation.
-> 64:ff9b:: is reserved for address translation. It best to keep it unaltered.
+
+> 64:ff9b:: is reserved for address translation - keep it.
 
 ## NAT64 options:
 - Tayga
