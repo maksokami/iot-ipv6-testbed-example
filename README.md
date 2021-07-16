@@ -36,10 +36,13 @@ It is also possible to decouple DNS64 and NAT64 functions and run them on differ
 > Note: You can replace network fd00:: with your private home ipv6 network and connect client and router to the same switch instead of direct connection
 
 # IPv6 address assignment options
+
 - Static=Manual (this example by default uses static addresses)
 - SLAAC (Stateless autoconfiguration, most commont). See [**address-assignment-1-stateless-auto.md**](address-assignment-1-stateless-auto.md)
 - DHCPv6 stateless. See [**address-assignment-2-dhcpv6-stateless.md**](address-assignment-2-dhcpv6-stateless.md)
 - DHCPv6 stateful. See [**address-assignment-3-dhcpv6-stateful.md**](address-assignment-3-dhcpv6-stateful.md)
+
+Read more about packet exchange for each assignment option: [Troubleshoot IPv6 Dynamic Address Assignment with Cisco Router and Microsoft Windows PC](https://www.cisco.com/c/en/us/support/docs/ip/ip-version-6-ipv6/213272-troubleshoot-ipv6-dynamic-address-assign.html)
 
 # RFCs:
 - [Unique Local IPv6 Unicast Addresses](https://datatracker.ietf.org/doc/html/rfc4193)
