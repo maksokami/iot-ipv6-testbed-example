@@ -1,4 +1,4 @@
-# Stateless autoconfiguration
+# Stateless autoconfiguration (SLAAC)
 
 ## Router
 
@@ -25,15 +25,23 @@ systemctl status radvd --no-pager
 ```
 
 ## Client
-Delete static IPv6 address
+Alter /etc/network/interface
 ```
-ip address delete fd:0:0:1::5/96 dev enp0s3
+iface enp0s3 inet auto
+  request prefix 1
+```
 
-# You will see address generated in fd:0:0:1 subnet from client's MAC address:
+Verify
+```
 ip -6 addr show enp0s3
 ```
-Address: MAC-based client auto-configuration
+
+-----
+
+Network Prefix: Auto
+
+Host Address: Client machine derives based on MAC (EUI-64)
+
+Default gateway configuration: Auto (Taken from router advertisement RA packet)
 
 DNS configuration: Manual
-
-Default gateway configuration: Manual
