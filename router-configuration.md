@@ -25,7 +25,7 @@ sysctl -w net.ipv6.route.flush=1
 
 ### IP forwarding 
 IP forwarding is required to forward IPv6 packets to the NAT64:
-```
+```sh
 echo "net.ipv4.ip_forward=1" | tee -a /etc/sysctl.conf
 echo "net.ipv6.conf.all.forwarding=1" | tee -a /etc/sysctl.conf
 sudo sysctl -p
@@ -34,7 +34,7 @@ sudo sysctl -p
 ### Configure interfaces
 #### Router
 Modify /etc/network/interface
-```
+```sh
 # WAN ipv4
 iface enp0s3 inet dhcp
 
@@ -43,11 +43,11 @@ iface enp0s8 inet6 static
 address df::1:0:0:0:1
 netmask 64
 ```
-```
+```sh
 systemctl restart networking
 ```
 Alternatively
-```
+```sh
 ip link set eth1 up
 ip address add x.x.x.x/24 dev eth1
 
@@ -62,7 +62,7 @@ https://www.jool.mx/en/install.html
 > Note that DKMS is kernel dependent
 
 Compiling from source
-```
+```sh
 apt install build-essential pkg-config
 apt install linux-headers-$(uname -r)
 apt install libnl-genl-3-dev libxtables-dev dkms
@@ -82,7 +82,7 @@ make install
 Configure jool (iptables)
 https://www.jool.mx/en/run-nat64.html
 
-```
+```sh
 modprobe jool
 jool instance add "nat64test" --iptables  --pool6 64:ff9b::/96
 ip6tables -t mangle -A PREROUTING -j JOOL --instance "nat64test"
@@ -92,7 +92,7 @@ iptables  -t mangle -A PREROUTING -j JOOL --instance "nat64test"
 ### Install DNS
 https://www.jool.mx/en/dns64.html
 
-```
+```sh
 sudo apt update
 sudo apt install -y bind9 bind9utils libcomerr2
 # install if you want to use dig for testing:
@@ -100,7 +100,7 @@ sudo apt install dnsutils
 ```
 
 Modify /etc/bind/named.conf.options
-```
+```sh
 acl any6 {
   # This ACL matches all ipv6 addresses
   ::0/0;
@@ -136,7 +136,7 @@ options {
 	};
 };
 ```
-```
+```sh
 service bind9 restart
 ```
 
