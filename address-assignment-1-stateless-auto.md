@@ -1,5 +1,7 @@
 # Stateless autoconfiguration (SLAAC)
 
+![IPv6 SLAAC](https://www.cisco.com/c/dam/en/us/support/docs/ip/ip-version-6-ipv6/213272-troubleshoot-ipv6-dynamic-address-assign-00.png)
+
 ## What to expect?
 - Client will learn correct prefix from the Router automatically (taken from RA packet)
 - Client will learn router's IP and configure it as default gateway automatically (taken from RA packet)
