@@ -6,20 +6,108 @@ What's different compared to stateless DHCPv6:
 
 ![DHCPv6 stateful](https://www.cisco.com/c/dam/en/us/support/docs/ip/ip-version-6-ipv6/213272-troubleshoot-ipv6-dynamic-address-assign-09.png)
 
+## Router (ISC DHCP server)
+Install DHCP server
+```
+apt install -y isc-dhcp-server
+```
+Alter config /etc/dhcp/dhcpd6.conf. (Timers are set very short in this example - increase for production.
+```
+default-lease-time 120;
+preferred-lifetime 360;
+# 1/2 preferred lifetime
+option dhcp-renewal-time 180;
+# 3/4 preferred lifetime
+option dhcp-rebinding-time 270;
+
+# Enable RFC 5007 support
+allow leasequery;
+
+
+option dhcp6.name-servers fd:0:0:1::1;
+option dhcp6.domain-search "test.local";
+
+option dhcp6.info-refresh-time 600;
+
+subnet6 fd:0:0:1::/64 {
+	range6  fd:0:0:1:1::1   fd:0:0:1:2::1;
+}
+
+```
+
+Create a completely separate IPv6-only service (In case we want to preserve and control IPv4 DHCP server separately)
+```
+sudo cp /etc/init.d/isc-dhcp-server /etc/init.d/isc-dhcp-server6
+sudo cp /etc/default/isc-dhcp-server /etc/default/isc-dhcp-server6
+```
+Alter /etc/init.d/isc-dhcp-server6
+```
+#!/bin/sh
+#
+#
+
+### BEGIN INIT INFO
+# Provides:          isc-dhcp-server6
+. . .
+
+# Short-Description: DHCPv6 server
+
+. . .
+
+DHCPD_DEFAULT="${DHCPD_DEFAULT:-/etc/default/isc-dhcp-server6}"
+
+. . .
+
+
+NAME6=dhcpd6
+DESC6="ISC DHCPv6 server"
+# fallback to default config file
+DHCPDv6_CONF=${DHCPD_CONF:-/etc/dhcp/dhcpd6.conf}
+
+DHCPDv6_PID="${DHCPDv6_PID:-/var/run/dhcpd6.pid}"
+
+. . .
+```
+Alter /etc/default/isc-dhcp-server6
+```
+
+DHCPDv6_CONF=/etc/dhcp/dhcpd6.conf
+
+DHCPDv6_PID=/var/run/dhcpd6.pid
+
+OPTIONS="-6"
+
+INTERFACESv6="enp0s8"
+```
+
+Restart the service and verify
+```
+systemctl daemon-reload
+systemctl stop isc-dhcp-server
+systemctl disable isc-dhcp-server
+
+systemctl restart isc-dhcp-server6
+systemctl enable isc-dhcp-server6
+systemctl status isc-dhcp-server6 --no-pager
+
+ss -tulpn | grep 547
+```
+
+Leases will be stored in /var/lib/dhcp/dhcpd6.leases.
+
+
+
 ## Client
-Delete static IPv6 address
-```
-# Delete any static addresses
-ip address delete fd:0:0:1::5/96 dev enp0s3
-# Renew IPv6 address
-dhclient -6 -r enp0s3
-dhclient -6 enp0s3
+Alter /etc/network/interface
 
-# You will see a unique address in fd:0:0:1:: allocated by the server
+```
+iface enp0s3 dhcp
+ request_prefix 1
+```
+
+Verify
+```
 ip -6 addr show enp0s3
+
+cat /etc/resolv.conf
 ```
-Address: Auto (Server allocates unique address)
-
-DNS configuration: Auto
-
-Default gateway configuration: Auto
