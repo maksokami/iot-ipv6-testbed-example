@@ -11,9 +11,7 @@ Server/router sends RA and DHCPv6 information (network prefix, default gateway, 
 - NTP will not be configured in this example 
 
 
-## Router
-
-### Option 1 - RADVD 
+## Router (RADVD)
 
 ```
 apt install radvd
@@ -44,18 +42,6 @@ systemctl restart radvd
 systemctl status radvd --no-pager
 ```
 
-### Option 2 - ISC server
-Install DHCP server
-```
-apt install -y isc-dhcp-server
-```
-Alter config /etc/dhcp/dhcpd6.conf
-```
-
-```
-
-
-
 ## Client
 Install rdnssd to autoconfigure DNS using ICMPv6 Neighbor Discovery (RFC 5006)
 ```
@@ -66,7 +52,7 @@ apt install -y rdnssd
 Alter /etc/network/interface
 
 ```
-iface enp0s3 auto
+iface enp0s3 dhcp
  accept_ra 2
  request_prefix 1
  autoconf 1
@@ -75,6 +61,8 @@ iface enp0s3 auto
 Verify
 ```
 ip -6 addr show enp0s3
+
+cat /etc/resolv.conf
 ```
 
 > **Why accept_ra 2?** 
