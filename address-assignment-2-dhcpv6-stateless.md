@@ -13,11 +13,11 @@ Server/router sends RA and DHCPv6 information (network prefix, default gateway, 
 
 ## Router (RADVD)
 
-```
+```sh
 apt install radvd
 ```
 Create /etc/radvd.conf. Bind to Client facing interface with IPv6
-```
+```sh
 interface enp0s8 {
   AdvSendAdvert on;
   MinRtrAdvInterval 3; 
@@ -37,21 +37,21 @@ interface enp0s8 {
 };
 ```
 Restart the service
-```
+```sh
 systemctl restart radvd
 systemctl status radvd --no-pager
 ```
 
 ## Client
 Install rdnssd to autoconfigure DNS using ICMPv6 Neighbor Discovery (RFC 5006)
-```
+```sh
 apt update
 apt install -y rdnssd
 
 ```
 Alter /etc/network/interface
 
-```
+```sh
 iface enp0s3 dhcp
  accept_ra 2
  request_prefix 1
@@ -59,7 +59,7 @@ iface enp0s3 dhcp
 ```
 
 Verify
-```
+```sh
 ip -6 addr show enp0s3
 
 cat /etc/resolv.conf
